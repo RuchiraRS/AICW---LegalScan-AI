@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "id": "RULE_MRP",
+      "name": "MRP Declaration",
+      "description": "Must have MRP declared on package.",
+      "field": "mrp",
+      "condition": "exists",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RULE_NET_QTY",
+      "name": "Net Quantity Declaration",
+      "description": "Must have Net Quantity declared.",
+      "field": "net_quantity",
+      "condition": "exists",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RULE_MFG",
+      "name": "Manufacturer Details",
+      "description": "Must declare manufacturer or packer.",
+      "field": "manufacturer",
+      "condition": "exists",
+      "severity": "MEDIUM"
+    }
+  ]
+}

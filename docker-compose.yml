@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: legalscan_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: legalscan_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/legalscan
+      - JWT_SECRET=legalscan_super_secret_key_2024
+      - PYTHON_AI_URL=http://ai-service:8000
+    depends_on:
+      - mongodb
+      - ai-service
+
+  frontend:
+    build: ./frontend
+    container_name: legalscan_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+
+  ai-service:
+    build: ./ai-service
+    container_name: legalscan_ai
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=./saved_models/best_model.keras
+    volumes:
+      - ./uploads:/app/uploads
+      - ./evidence:/app/evidence
+
+volumes:
+  mongo_data:
