@@ -1,31 +1,43 @@
-export const mockDashboardStats = {
-  totalInspections: 1245,
-  complianceRate: 87.2,
-  activeViolations: 43,
-  processingQueue: 12
+export const MOCK_DASHBOARD_STATS = {
+  totalInspections: 12450,
+  compliantCount: 11200,
+  potentialViolationsCount: 850,
+  pendingReviewsCount: 400
 };
 
-export const mockRecentInspections = [
-  { id: 'INS-2023-001', product: 'Industrial Valve X2', status: 'compliant', date: '2023-10-25', confidence: 98 },
-  { id: 'INS-2023-002', product: 'Steel Beam Q4', status: 'violation', date: '2023-10-24', confidence: 92 },
-  { id: 'INS-2023-003', product: 'Electrical Casing', status: 'warning', date: '2023-10-24', confidence: 85 },
-  { id: 'INS-2023-004', product: 'Pneumatic Drill', status: 'compliant', date: '2023-10-23', confidence: 95 },
+export const MOCK_RECENT_INSPECTIONS = [
+  {
+    _id: "60d5ec49c1231",
+    inspectionId: "INS-2026-8901",
+    productId: { productName: "Premium Basmati Rice 5kg", manufacturer: "AgroFarms Ltd." },
+    inspectionDate: new Date().toISOString(),
+    complianceStatus: "COMPLIANT",
+    overallConfidence: 98.5
+  },
+  {
+    _id: "60d5ec49c1232",
+    inspectionId: "INS-2026-8902",
+    productId: { productName: "Alkaline Water 1L", manufacturer: "AquaLife Beverages" },
+    inspectionDate: new Date(Date.now() - 86400000).toISOString(),
+    complianceStatus: "REQUIRES_REVIEW",
+    overallConfidence: 74.2
+  },
+  {
+    _id: "60d5ec49c1233",
+    inspectionId: "INS-2026-8903",
+    productId: { productName: "Organic Honey 500g", manufacturer: "NatureSweet" },
+    inspectionDate: new Date(Date.now() - 172800000).toISOString(),
+    complianceStatus: "NON_COMPLIANT",
+    overallConfidence: 92.1
+  }
 ];
 
-export const mockInspectionResult = {
-  id: 'INS-2023-002',
-  productName: 'Steel Beam Q4',
-  manufacturer: 'Titanium Build Co.',
-  date: '2023-10-24',
-  status: 'violation',
-  confidenceScore: 92,
-  summary: 'Product fails to meet structural integrity documentation requirements. Marking missing on primary surface.',
-  violations: [
-    { ruleId: 'R-104', description: 'Missing mandatory CE marking', severity: 'high' },
-    { ruleId: 'R-201', description: 'Documentation incomplete: missing tensile strength cert', severity: 'medium' }
-  ],
-  evidenceImages: [
-    'https://picsum.photos/seed/ev1/400/300',
-    'https://picsum.photos/seed/ev2/400/300'
-  ]
-};
+export const MOCK_CHART_DATA = [
+  { name: 'Mon', compliant: 120, violations: 12 },
+  { name: 'Tue', compliant: 150, violations: 18 },
+  { name: 'Wed', compliant: 180, violations: 8 },
+  { name: 'Thu', compliant: 140, violations: 20 },
+  { name: 'Fri', compliant: 200, violations: 15 },
+  { name: 'Sat', compliant: 90, violations: 5 },
+  { name: 'Sun', compliant: 110, violations: 7 },
+];

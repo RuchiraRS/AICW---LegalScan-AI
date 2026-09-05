@@ -1,24 +1,26 @@
 import React from 'react';
-import { Bell, Search } from 'lucide-react';
+import { Search, Bell } from 'lucide-react';
 
-const Topbar = () => {
+const Topbar = ({ title }) => {
   return (
-    <header className="h-20 bg-bg-base border-b border-border flex items-center justify-between px-8 ml-64">
-      <div className="flex-1">
-        <div className="relative w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search inspections, products, rules..." 
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all"
-          />
-        </div>
+    <header className="h-20 bg-bg-base flex items-center justify-between px-10">
+      <div>
+        <h2 className="text-3xl font-bold text-primary tracking-tight font-editorial">{title}</h2>
       </div>
       
-      <div className="flex items-center gap-4">
-        <button className="p-2 relative text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+      <div className="flex items-center gap-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+          <input 
+            type="text" 
+            placeholder="Search inspections..." 
+            className="pl-10 pr-4 py-2.5 bg-white border border-border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent w-64 shadow-soft transition-all"
+          />
+        </div>
+        
+        <button className="relative p-2 text-gray-500 hover:text-primary transition-colors bg-white rounded-full shadow-soft border border-border">
           <Bell size={20} />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+          <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full border-2 border-white"></span>
         </button>
       </div>
     </header>

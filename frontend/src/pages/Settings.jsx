@@ -3,8 +3,16 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 
 const Settings = () => {
+  const handleSave = () => {
+    alert('Settings saved successfully!');
+  };
+
+  const handleUpdate = () => {
+    alert('Checking for rule engine updates... You are on the latest version.');
+  };
+
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-8 max-w-4xl mx-auto p-4">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-primary">Settings</h1>
         <p className="text-gray-500 mt-1">Configure your LegalScan AI preferences.</p>
@@ -32,7 +40,7 @@ const Settings = () => {
             </div>
             <p className="text-xs text-gray-400 mt-2">Findings below this threshold will automatically be flagged for officer review.</p>
           </div>
-          <Button>Save Thresholds</Button>
+          <Button onClick={handleSave}>Save Thresholds</Button>
         </div>
       </Card>
 
@@ -43,7 +51,7 @@ const Settings = () => {
               <p className="font-medium text-primary">Active Rule Engine Version</p>
               <p className="text-sm text-gray-500">Legal Metrology Rules 2011 (v2.4)</p>
             </div>
-            <Button variant="outline">Update Engine</Button>
+            <Button variant="outline" onClick={handleUpdate}>Update Engine</Button>
           </div>
           <div className="flex items-center justify-between pt-2">
             <div>

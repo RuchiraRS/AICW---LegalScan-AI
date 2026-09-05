@@ -3,27 +3,31 @@ const User = require('../models/User');
 
 const protect = async (req, res, next) => {
   let token;
+
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'legalscan_super_secret_key_2024');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
       req.user = await User.findById(decoded.id).select('-password');
       next();
     } catch (error) {
-      console.error(error);
-      res.status(401).json({ success: false, message: 'Not authorized, token failed' });
+      console.error('Token validation failed:', error);
+      res.status(401);
+      next(new Error('Not authorized, token failed'));
     }
   }
 
   if (!token) {
-    res.status(401).json({ success: false, message: 'Not authorized, no token' });
+    res.status(401);
+    next(new Error('Not authorized, no token'));
   }
 };
 
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ success: false, message: `User role ${req.user.role} is not authorized to access this route` });
+      res.status(403);
+      return next(new Error(`User role ${req.user.role} is not authorized to access this route`));
     }
     next();
   };

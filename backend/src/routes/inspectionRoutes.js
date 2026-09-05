@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { createInspection, uploadImages, getInspection, getInspections, analyzeInspection } = require('../controllers/inspectionController');
+const upload = require('../middleware/uploadMiddleware');
 const { protect } = require('../middleware/authMiddleware');
-const upload = require('../config/upload');
+const {
+  createInspection,
+  getInspections,
+  getInspectionById,
+  uploadImage,
+  analyzeInspection
+} = require('../controllers/inspectionController');
 
-router.post('/', protect, createInspection);
-router.get('/', protect, getInspections);
-router.get('/:id', protect, getInspection);
-router.post('/:id/images', protect, upload.single('image'), uploadImages);
+router.route('/')
+  .post(protect, createInspection)
+  .get(protect, getInspections);
+
+router.route('/:id')
+  .get(protect, getInspectionById);
+
+router.post('/:id/images', protect, upload.single('image'), uploadImage);
 router.post('/:id/analyze', protect, analyzeInspection);
 
 module.exports = router;

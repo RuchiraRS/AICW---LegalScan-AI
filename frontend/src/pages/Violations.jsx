@@ -1,40 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Card from '../components/Card';
 import Button from '../components/Button';
-import { violationsAPI } from '../services/api';
 import { ShieldAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSeedData } from '../context/SeedDataContext';
 
 const Violations = () => {
-  const [violations, setViolations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { getViolationsWithDetails, updateViolationStatus } = useSeedData();
   const navigate = useNavigate();
+  
+  const violations = getViolationsWithDetails();
 
-  useEffect(() => {
-    const fetchViolations = async () => {
-      try {
-        const res = await violationsAPI.getAll();
-        setViolations(res.data.data || []);
-      } catch (err) {
-        console.error('Failed to fetch violations', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchViolations();
-  }, []);
-
-  const handleReview = async (id, status) => {
-    try {
-      await violationsAPI.review(id, { status, officerRemark: 'Reviewed by officer' });
-      // Update UI locally
-      setViolations(prev => prev.map(v => v._id === id ? { ...v, status } : v));
-    } catch (err) {
-      console.error('Failed to update violation', err);
-    }
+  const handleReview = (id, status) => {
+    updateViolationStatus(id, status);
   };
-
-  if (loading) return <div className="p-8 text-center text-gray-500">Loading violations...</div>;
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
@@ -54,7 +33,7 @@ const Violations = () => {
                   <div className="mt-1"><ShieldAlert className="text-error" size={24} /></div>
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-sm font-bold px-2 py-0.5 bg-gray-200 rounded text-gray-700">{v.ruleId}</span>
+                      <span className="text-sm font-bold px-2 py-0.5 bg-gray-200 rounded text-gray-700">{v.ruleDetails?.section || v.ruleId}</span>
                       <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${v.severity === 'HIGH' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
                         {v.severity}
                       </span>
@@ -70,13 +49,13 @@ const Violations = () => {
                     </p>
                     <p className="text-sm text-gray-500 mt-2">{v.explanation}</p>
                     <div className="mt-4 text-xs text-gray-400">
-                      Inspection ID: {v.inspectionId?.inspectionId} • Confidence: {v.confidence || 0}%
+                      Inspection: {v.inspectionId?.inspectionId} • Product: {v.productName || 'Unknown'} • Mfg: {v.manufacturerName || 'Unknown'} • Confidence: {v.confidence || 0}%
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex flex-col gap-2">
-                  <Button variant="outline" className="text-xs" onClick={() => navigate(`/results/${v.inspectionId?._id}`)}>View Inspection</Button>
+                  <Button variant="outline" className="text-xs" onClick={() => navigate(`/results/${v.inspectionId?.inspectionId}`)}>View Inspection</Button>
                   {v.status === 'AI_DETECTED' && (
                     <>
                       <Button className="text-xs bg-green-600 hover:bg-green-700 border-none" onClick={() => handleReview(v._id, 'CONFIRMED')}>Confirm</Button>
